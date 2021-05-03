@@ -1,4 +1,4 @@
-# pylogger
+### pylogger - Logger Utility in python
 
 <details>
   <summary>Contents</summary>
