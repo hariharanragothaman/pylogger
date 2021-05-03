@@ -11,6 +11,10 @@ Welcome to pylogger's documentation!
    :caption: Contents:
 
 
+pylogger main
+==========================
+.. automodule:: pylogger
+   :members:
 
 Indices and tables
 ==================
