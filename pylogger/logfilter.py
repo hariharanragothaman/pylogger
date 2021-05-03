@@ -1,7 +1,9 @@
 import threading
 
-class LogFilter():
+
+class LogFilter:
     """Custom log filter for adding custom fields to log records."""
+
     def __init__(self):
         pass
 

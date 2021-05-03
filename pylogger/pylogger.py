@@ -25,8 +25,16 @@ _formatter = None
 
 ####################################################################################################################
 
-def get_logger(name=None, logfile=None, level=logging.DEBUG,
-               formatter=None, maxBytes=0, backupCount=0, fileLoglevel=None):
+
+def get_logger(
+    name=None,
+    logfile=None,
+    level=logging.DEBUG,
+    formatter=None,
+    maxBytes=0,
+    backupCount=0,
+    fileLoglevel=None,
+):
     """
     Configures and Returns a logger instance
 
@@ -52,7 +60,9 @@ def get_logger(name=None, logfile=None, level=logging.DEBUG,
         if isinstance(handler, logging.StreamHandler):
             has_stream_handler = True
 
-        if isinstance(handler, logging.FileHandler) and hasattr(handler, INTERNAL_LOGGER_ATTR):
+        if isinstance(handler, logging.FileHandler) and hasattr(
+            handler, INTERNAL_LOGGER_ATTR
+        ):
             # Internal FileHandler needs to be removed and re-setup to be able
             # to set a new logfile.
             _logger.removeHandler(handler)
@@ -70,7 +80,9 @@ def get_logger(name=None, logfile=None, level=logging.DEBUG,
         _logger.addHandler(stream_handler)
 
     if logfile:
-        rotating_filehandler = RotatingFileHandler(filename=logfile, maxBytes=maxBytes, backupCount=backupCount)
+        rotating_filehandler = RotatingFileHandler(
+            filename=logfile, maxBytes=maxBytes, backupCount=backupCount
+        )
         setattr(rotating_filehandler, INTERNAL_LOGGER_ATTR, True)
         rotating_filehandler.setLevel(fileLoglevel or level)
         rotating_filehandler.setFormatter(formatter or LogFormatter(color=False))
@@ -84,9 +96,14 @@ def get_logger(name=None, logfile=None, level=logging.DEBUG,
 
 # some custom logic area
 
-def setup_default_logger(logfile=None, level=logging.DEBUG, formatter=None, maxBytes=0, backupCount=0):
+
+def setup_default_logger(
+    logfile=None, level=logging.DEBUG, formatter=None, maxBytes=0, backupCount=0
+):
     global logger
-    logger = get_logger(name=DEFAULT_LOGGER, logfile=logfile, level=level, formatter=formatter)
+    logger = get_logger(
+        name=DEFAULT_LOGGER, logfile=logfile, level=level, formatter=formatter
+    )
     return logger
 
 
@@ -147,7 +164,15 @@ def formatter(formatter, update_custom_handlers=False):
     _formatter = formatter
 
 
-def logfile(filename, formatter=None, mode='a', maxBytes=0, backupCount=0, encoding=None, loglevel=None):
+def logfile(
+    filename,
+    formatter=None,
+    mode="a",
+    maxBytes=0,
+    backupCount=0,
+    encoding=None,
+    loglevel=None,
+):
     """
     Function to handle the rotating fileHandler
     :param filename: filename logs are being collected
@@ -159,16 +184,20 @@ def logfile(filename, formatter=None, mode='a', maxBytes=0, backupCount=0, encod
     """
     # Step 1: If an internal RotatingFileHandler already exists, remove it
     for handler in list(logger.handlers):
-        if isinstance(handler, RotatingFileHandler) and hasattr(handler, INTERNAL_LOGGER_ATTR):
+        if isinstance(handler, RotatingFileHandler) and hasattr(
+            handler, INTERNAL_LOGGER_ATTR
+        ):
             logger.removeHandler(handler)
 
     # Step 2: If wanted, add the RotatingFileHandler now
     if filename:
-        rotating_filehandler = RotatingFileHandler(filename,
-                                                   mode=mode,
-                                                   maxBytes=maxBytes,
-                                                   backupCount=backupCount,
-                                                   encoding=encoding)
+        rotating_filehandler = RotatingFileHandler(
+            filename,
+            mode=mode,
+            maxBytes=maxBytes,
+            backupCount=backupCount,
+            encoding=encoding,
+        )
 
         # Set internal attributes on this handler
         setattr(rotating_filehandler, INTERNAL_LOGGER_ATTR, True)
@@ -177,7 +206,9 @@ def logfile(filename, formatter=None, mode='a', maxBytes=0, backupCount=0, encod
 
         # Configure the handler and add it to the logger
         rotating_filehandler.setLevel(loglevel or _loglevel)
-        rotating_filehandler.setFormatter(formatter or _formatter or LogFormatter(color=False))
+        rotating_filehandler.setFormatter(
+            formatter or _formatter or LogFormatter(color=False)
+        )
         logger.addHandler(rotating_filehandler)
 
 
@@ -192,7 +223,9 @@ def log_function_call(func):
             all_args_str = args_str or kwargs_str
         logger.debug("%s(%s)", func.__name__, all_args_str)
         return func(*args, **kwargs)
+
     return wrap
+
 
 ########################################## END OF CUSTOM LOGIC ######################################################
 

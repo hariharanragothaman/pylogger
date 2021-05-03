@@ -1,8 +1,8 @@
-
 import logging
 
 basestring_type = str
 unicode_type = str
+
 
 class LogFormatter(logging.Formatter):
     """
@@ -10,22 +10,19 @@ class LogFormatter(logging.Formatter):
     * Timestamps on every log line.
     * Robust against str/bytes encoding problems.
     """
-    DEFAULT_FORMAT = '[%(levelname)1.1s %(asctime)s.%(msecs)03d %(module)s:%(lineno)d] [%(threadid)s] %(message)s'
-    DEFAULT_DATE_FORMAT = '%y%m%d %H:%M:%S'
 
-    def __init__(self,
-                 color=True,
-                 fmt=DEFAULT_FORMAT,
-                 datefmt=DEFAULT_DATE_FORMAT):
+    DEFAULT_FORMAT = "[%(levelname)1.1s %(asctime)s.%(msecs)03d %(module)s:%(lineno)d] [%(threadid)s] %(message)s"
+    DEFAULT_DATE_FORMAT = "%y%m%d %H:%M:%S"
+
+    def __init__(self, color=True, fmt=DEFAULT_FORMAT, datefmt=DEFAULT_DATE_FORMAT):
         logging.Formatter.__init__(self, datefmt=datefmt)
         self._fmt = fmt
-        self._normal = ''
+        self._normal = ""
 
     def format(self, record):
         try:
             message = record.getMessage()
-            assert isinstance(message,
-                              basestring_type)
+            assert isinstance(message, basestring_type)
             record.message = _safe_unicode(message)
         except AssertionError as exception:
             record.message = "Bad message (%r): %r" % (exception, record.__dict__)
@@ -41,10 +38,10 @@ class LogFormatter(logging.Formatter):
             # each line separately so that non-utf8 bytes don't cause
             # all the newlines to turn into '\n'.
             lines = [formatted.rstrip()]
-            lines.extend(
-                _safe_unicode(ln) for ln in record.exc_text.split('\n'))
-            formatted = '\n'.join(lines)
+            lines.extend(_safe_unicode(ln) for ln in record.exc_text.split("\n"))
+            formatted = "\n".join(lines)
         return formatted.replace("\n", "\n    ")
+
 
 _TO_UNICODE_TYPES = (unicode_type, type(None))
 
@@ -60,8 +57,7 @@ def to_unicode(value):
     if isinstance(value, _TO_UNICODE_TYPES):
         return value
     if not isinstance(value, bytes):
-        raise TypeError(
-            "Expected bytes, unicode, or None; got %r" % type(value))
+        raise TypeError("Expected bytes, unicode, or None; got %r" % type(value))
     return value.decode("utf-8")
 
 
