@@ -16,6 +16,7 @@ pylogger main
 .. automodule:: pylogger
    :members:
 
+
 Indices and tables
 ==================
 
