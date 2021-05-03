@@ -9,7 +9,6 @@ class LogFilter:
 
     def filter(self, record):
         """Required method that is called when a log record is generated in a logger."""
-
         # add a custom thread ID to the log format object
         record.threadid = self.get_thread_id()
         return True

@@ -1,13 +1,17 @@
 """
-Logging Utility for internal stuff
+Custom Logging Utility for internal usage
 """
-import functools
+
 import logging
+import functools
 
 from logging.handlers import RotatingFileHandler
 
 from logfilter import LogFilter
 from logformatter import LogFormatter
+
+
+# List of Globals needed
 
 bytes_type = bytes
 unicode_type = str
